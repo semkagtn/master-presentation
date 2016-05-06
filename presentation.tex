@@ -77,7 +77,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Предлагаемая концепция решения}
+\begin{frame}{Предлагаемый подход к решению}
     \begin{figure}
         \includegraphics[width=\textwidth]{figures/master-concept.pdf}
     \end{figure}
@@ -149,7 +149,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Модель на примере определения пола и возраста}
+\begin{frame}{Подход на примере определения пола и возраста}
     \begin{itemize}
         \item {Использовался набор данных из существующего 
               исследования~\footnote{Wu M. J.,
@@ -172,7 +172,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Обучение классификатора/регрессора}
+\begin{frame}{Используемые техники}
   \begin{itemize}
       \item {Определение пола~--- задача бинарной классификации}
           \begin{itemize}
@@ -182,6 +182,8 @@
           \begin{itemize}
               \item {Качество~--- средняя абсолютная ошибка}
           \end{itemize}
+      \item {Латентный семантический анализ~--- \textit{LSI} (200 признаков)}
+      \item {Word embedding~--- \textit{Word2Vec} (\textbf{20} признаков)}
       \item {Метод опорных векторов с ядром \textit{RBF}}
       \item {Параметры $C$ и $\gamma$ настраивались методом \textit{Grid Search Cross Validation} на обучающей выборке}
       \item {Векторы пользователей были нормализованы перед использованием метода опорных векторов}
