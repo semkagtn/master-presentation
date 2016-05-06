@@ -80,7 +80,13 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Матрица исполнитель--пользователь}
+\begin{frame}{Предлагаемая концепция решения}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{figures/master-concept.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Шаг 1: <<bag of words>>}
   \begin{itemize}
       \item {Пользователи~--- документы, исполнители~--- термины}
       \item {$D = \{d_{ij}\}$~--- матрица термин--документ}
@@ -100,26 +106,49 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Латентный семантический анализ}
+\begin{frame}{Шаг 1: на основе порядка}
   \begin{itemize}
-      \item {Каждый пользователь описывается вектором-столбоцом матрицы $D$}
-      \item {Размерность векторов оказывается большой}
-      \item {Используя метод \textit{LSI}, можно уменьшить размерность векторов (например, до $200$)}
-      \item {Каждый пользователь описан числовым вектром размерности $200$}
+      \item {Гипотеза о значимости порядка следования исполнителей}
+      \item {Чем выше находится исполнитель в списке,
+               тем более <<значимым>> он является для пользователя}
+      \item {Пусть $A_{ij} \subset \mathbb{N}$~--- множество позиций, на которых располагается
+             исполнитель $i$ в списке у пользователя $j$}
+      \item {$d_{ij} = \begin{cases}
+          0,& A_{ij} = \varnothing,\\
+          \sum\limits_{a \in A_{ij}}{f(a)},& A_{ij} \ne \varnothing 
+      \end{cases}$}
+      \begin{itemize}
+          \item {$f(a)$~--- невозрастающая неотрицательная функция}
+      \end{itemize}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Подход на основе Word2Vec}
+\begin{frame}{Шаг 2: латентный семантический анализ}
   \begin{itemize}
-      \item {Пользователи~--- предложения, исполнители~--- термины}
-      \item {\textit{Word2Vec} преобразует термины в вектора произвольной размерности (например, $200$)}
-      \item {$\bm{d}_{i} = \sum\limits_{n}{f(n) \cdot \bm{w}_{in}}$}
-          \begin{itemize}
-              \item {$\bm{d}_{i}$~--- вектор пользователя}
-              \item {$\bm{w}_{in}$~--- исполнитель пользователя $i$, находящийся на позиции $n$}
-              \item {$f(n)$~--- невозрастающая неотрицательная функция на отрезке $[1; 50]$}
-          \end{itemize}
-      \item {Каждый пользователь описан числовым вектром размерности $200$}
+      \item {Пусть $D \in \mathbb{R}^{m \times n}$~--- матрица исполнитель--пользователь}
+      \item {\textit{Латентный семантический анализ}~--- пребразование документов из пространства
+             терминов в пространство латентных тематик}
+      \item {$D = U \cdot V^{T}$}
+      \begin{itemize}
+          \item {$U \in \mathbb{R}^{m \times k}$}
+          \item {$V \in \mathbb{R}^{n \times k}$}
+          \item {$k \ll m$}
+          \item {$V$~--- матрица пользователь--признак}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Шаг 2: на основе word embedding}
+  \begin{itemize}
+      \item {$D \in \mathbb{R}^{m \times n}$~--- исполнитель--пользователь}
+      \item {\textit{Word embedding} преобразует термины в вектора произвольной размерности ($k$)}
+      \item {$W \in \mathbb{R}^{m \times k}$~--- матрица, полученная при использовании word embedding}
+      \item {$M = D^T \cdot W$}
+      \begin{itemize}
+          \item {$M \in \mathbb{R}^{n \times k}$}
+          \item {$k \ll m$}
+          \item {$M$~--- матрица пользователь--признак}
+      \end{itemize}
   \end{itemize}
 \end{frame}
 
