@@ -14,17 +14,14 @@
 \newcommand{\prevGender}{78,87\%}
 \newcommand{\prevAge}{3,69}
 
-\newcommand{\bestGender}{82,46\%}
-\newcommand{\bestAge}{3,38}
-
 \setbeamertemplate{footline}[frame number]
 
 \title{Определение демографических характеристик пользователей
 социальных сетей на основе анализа их музыкальных интересов}
 \author{\textbf{Семёнов~A.~C.,} \\ 
-    магистрант кафедры КТ университета ИТМО, \\
-    semkagtn@gmail.com}
-\institute{СПИСОК 2016}
+    группа: M4238, \\
+    научный руководитель: Фильченков~A.~A., к.ф.-м.н.}
+\institute{Университет ИТМО}
 \date{\today}
 
 \subject{Научно-исследовательская работа}
@@ -191,7 +188,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Результаты: матрица исполнитель--пользователь}
+\begin{frame}{Результаты: <<bag of words>> + ЛСА}
     \[d_{ij} = \begin{cases}
               0,& \mathrm{tf}_{ij} = 0,\\
               l(\mathrm{tf}_{ij}) \cdot g(\frac{n}{\mathrm{df}_{i}}),& \mathrm{tf}_{ij} \ne 0
@@ -223,54 +220,126 @@
     $x$ & $\sqrt{x}$ & 78,75\% & 3,88 \tabularnewline
     \hline
     \end{tabular}
-    \label{tab:tfidf_results}
+    \label{tab:bagofwords_lsa}
     \end{table}
 \end{frame}
 
-\begin{frame}{Результаты: модель Word2Vec}
-    \[d_{i} = \sum_{n}{f(n) \cdot w_{in}}\]
+\begin{frame}{Результаты: матрица на основе порядка + ЛСА}
+    \[d_{ij} = \begin{cases}
+              0,& A_{ij} = \varnothing,\\
+              \sum\limits_{a \in A_{ij}}{f(a)},& A_{ij} \ne \varnothing
+          \end{cases}\]
     \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|}
     \hline
-    \boldmath$f(n)$ & \textbf{Опредление пола} & \textbf{Определение возраста} \tabularnewline
+    \boldmath$f(a)$ & \textbf{Опредление пола} & \textbf{Определение возраста} \tabularnewline
     \hline
     $1$ & 78,12\% & 3,97 \tabularnewline
     \hline
-    $\frac{1}{\log{n + 1}}$ & 79,61\% & 3,59 \tabularnewline
+    $\frac{1}{\log{a + 1}}$ & 79,65\% & 3,93 \tabularnewline
     \hline
-    $\frac{1}{n^2}$ & 78,66\% & 4,02 \tabularnewline
+    $\frac{1}{a^2}$ & 77,51\% & 4,06 \tabularnewline
     \hline
-    $\frac{1}{n}$ & 80,22\% & 3,75 \tabularnewline
+    $\frac{1}{a}$ & 77,67\% & 4,13 \tabularnewline
     \hline
-    $\frac{1}{\sqrt{n}}$ & \textbf{81,46\%} & \textbf{3,38} \tabularnewline
+    $\frac{1}{\sqrt{a}}$ & \textbf{79,39\%} & \textbf{3,97} \tabularnewline
     \hline
-    $51 - n$ & 77,85\% & 4,03 \tabularnewline
+    $51 - a$ & 79,01\% & 3,98 \tabularnewline
     \hline
-    $\log{51} - \log{n}$ & 78,16\% & 3,95 \tabularnewline
+    $\log{51} - \log{a}$ & 78,72\% & 4,04 \tabularnewline
     \hline
-    $\sqrt{51} - \sqrt{n}$ & 78,12\% & 3,98 \tabularnewline
+    $\sqrt{51} - \sqrt{a}$ & 79,02\% & 4,01 \tabularnewline
     \hline
     \end{tabular}
-    \label{tab:doc2vec_results}
+    \label{tab:order_lsa}
     \end{table}
 \end{frame}
 
-\begin{frame}{Результаты: сравнение с достигнутыми ранее}
-    \textit{best}~--- результаты текущего исследования \\
+\begin{frame}{Результаты: <<bag of words>> + word embedding}
+    \[d_{ij} = \begin{cases}
+              0,& \mathrm{tf}_{ij} = 0,\\
+              l(\mathrm{tf}_{ij}) \cdot g(\frac{n}{\mathrm{df}_{i}}),& \mathrm{tf}_{ij} \ne 0
+        \end{cases}\]
+    \begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \boldmath$l(x)$ & \boldmath$g(x)$ & \textbf{Определение пола} & \textbf{Определение возраста} \tabularnewline
+    \hline
+    $1$ & $1$ & \textbf{80,25\%} & 3,08 \tabularnewline
+    \hline
+    $\log{x}$ & $1$ & 80,03\% & \textbf{3,02} \tabularnewline
+    \hline
+    $\log{x}$ & $\log{x}$ & 78,06\% & 3,42 \tabularnewline
+    \hline
+    $\log{x}$ & $\sqrt{x}$ & 78,04\% & 3,43 \tabularnewline
+    \hline
+    $\sqrt{x}$ & $1$ & 78,40\% & 3,27 \tabularnewline
+    \hline
+    $\sqrt{x}$ & $\log{x}$ & 78,06\% & 3,42 \tabularnewline
+    \hline
+    $\sqrt{x}$ & $\sqrt{x}$ & 78,02\% & 3,43 \tabularnewline
+    \hline
+    $x$ & $1$ & 78,04\% & 3,39 \tabularnewline
+    \hline
+    $x$ & $\log{x}$ & 78,01\% & 3,43 \tabularnewline
+    \hline
+    $x$ & $\sqrt{x}$ & 78,00\% & 3,43 \tabularnewline
+    \hline
+    \end{tabular}
+    \label{tab:bagofwords_wordembedding}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Результаты: матрица на основе порядка + word embedding}
+    \[d_{ij} = \begin{cases}
+              0,& A_{ij} = \varnothing,\\
+              \sum\limits_{a \in A_{ij}}{f(a)},& A_{ij} \ne \varnothing
+          \end{cases}\]
+    \begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \boldmath$f(a)$ & \textbf{Опредление пола} & \textbf{Определение возраста} \tabularnewline
+    \hline
+    $1$ & 78,12\% & 3,40 \tabularnewline
+    \hline
+    $\frac{1}{\log{a + 1}}$ & 80,05\% & 2,97 \tabularnewline
+    \hline
+    $\frac{1}{a^2}$ & 72,20\% & 4,63 \tabularnewline
+    \hline
+    $\frac{1}{a}$ & 78,76\% & 3,74 \tabularnewline
+    \hline
+    $\frac{1}{\sqrt{a}}$ & \textbf{82,01\%} & \textbf{2,93} \tabularnewline
+    \hline
+    $51 - a$ & 77,91\% & 3,48 \tabularnewline
+    \hline
+    $\log{51} - \log{a}$ & 78,12\% & 3,37 \tabularnewline
+    \hline
+    $\sqrt{51} - \sqrt{a}$ & 78,15\% & 3,41 \tabularnewline
+    \hline
+    \end{tabular}
+    \label{tab:order_wordembedding}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Заключение}
+    \textit{BOW+ЛСА}~--- <<bag of words>> + ЛСА \\
+    \textit{Order+WE}~--- матрица на основе порядка + word embedding \\
     \textit{baseline}~--- Wu M. J.,
         Jang J. S. R., Lu C. H. Gender Identification
         and Age Estimation of Users Based on Music 
         Metadata // The International Society of Music Information Retrieval (ISMIR). – 2014. – P.~555--560.
     \begin{table}[h!]
     \centering
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline
-    \textbf{Тип задачи} & \textbf{best} & \textbf{baseline} \tabularnewline
+    \textbf{Тип задачи} & \textbf{BOW+ЛСА} & \textbf{Order+WE} & \textbf{baseline} \tabularnewline
     \hline
-    Определение пола & \textbf{\bestGender} & \prevGender \tabularnewline
+    Определение пола & \textbf{82,46\%} & 82,01\% & \prevGender \tabularnewline
     \hline
-    Определение возраста & \textbf{\bestAge} & \prevAge \tabularnewline
+    Определение возраста & 3,54 & \textbf{2,93} & \prevAge \tabularnewline
     \hline
     \end{tabular}
     \label{tab:total_results}
@@ -280,7 +349,5 @@
 \begin{frame}
     \titlepage
 \end{frame}
-
-
 
 \end{document}
