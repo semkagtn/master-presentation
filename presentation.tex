@@ -65,12 +65,6 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Источник данных~--- Last.fm}
-    \begin{figure}
-        \includegraphics[width=\textwidth]{figures/lastfm.png}
-    \end{figure}
-\end{frame}
-
 \begin{frame}{Задача определения характеристик пользователей}
     \begin{figure}
         \includegraphics[scale=0.40]{figures/lastfm-top.pdf}
@@ -99,6 +93,14 @@
       \end{cases}$}
           \begin{itemize}
               \item {$l(x), g(x)$~--- неубывающие неотрицательные функции}
+          \end{itemize}
+      \item {$ 
+          d_{ij} = \log{(\mathrm{tf}_{ij} + 1)} 
+          (1 + \sum_{j=1}^{n} \frac{p_{ij} \log{p_{ij}}}{\log{n}})
+$ (Формула log-entropy)}
+          \begin{itemize}
+              \item {$p_{ij} = \frac{\mathrm{tf}_{ij}}{\mathrm{gf}_i}$}
+              \item {$\mathrm{gf}_i$~--- общее число встреч термина $i$}
           \end{itemize}
   \end{itemize}
 \end{frame}
@@ -149,10 +151,16 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Источник данных~--- Last.fm}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{figures/lastfm.png}
+    \end{figure}
+\end{frame}
+
 \begin{frame}{Подход на примере определения пола и возраста}
     \begin{itemize}
         \item {Использовался набор данных из существующего 
-              исследования~\footnote{Wu M. J.,
+              исследования\footnote{Wu M. J.,
               Jang J. S. R., Lu C. H. Gender Identification
               and Age Estimation of Users Based on Music 
               Metadata // The International Society of Music Information Retrieval (ISMIR). – 2014. – P.~555--560.}}
@@ -172,7 +180,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Используемые техники}
+\begin{frame}{Конфигурация используемых алгоритмов}
   \begin{itemize}
       \item {Определение пола~--- задача бинарной классификации}
           \begin{itemize}
@@ -183,7 +191,7 @@
               \item {Качество~--- средняя абсолютная ошибка}
           \end{itemize}
       \item {Латентный семантический анализ~--- \textit{LSI} (200 признаков)}
-      \item {Word embedding~--- \textit{Word2Vec} (\textbf{20} признаков)}
+      \item {Word embedding~--- \textit{Word2Vec} (200 признаков)}
       \item {Метод опорных векторов с ядром \textit{RBF}}
       \item {Параметры $C$ и $\gamma$ настраивались методом \textit{Grid Search Cross Validation} на обучающей выборке}
       \item {Векторы пользователей были нормализованы перед использованием метода опорных векторов}
@@ -195,35 +203,24 @@
               0,& \mathrm{tf}_{ij} = 0,\\
               l(\mathrm{tf}_{ij}) \cdot g(\frac{n}{\mathrm{df}_{i}}),& \mathrm{tf}_{ij} \ne 0
         \end{cases}\]
-    \begin{table}[h!]
-    \centering
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-    \boldmath$l(x)$ & \boldmath$g(x)$ & \textbf{Определение пола} & \textbf{Определение возраста} \tabularnewline
-    \hline
-    $1$ & $1$ & \textbf{82,46\%} & \textbf{3,54} \tabularnewline
-    \hline
-    $\log{x}$ & $1$ & 81,58\% & 3,64 \tabularnewline
-    \hline
-    $\log{x}$ & $\log{x}$ & 81,67\% & 3,57 \tabularnewline
-    \hline
-    $\log{x}$ & $\sqrt{x}$ & 80,04\% & 3,76 \tabularnewline
-    \hline
-    $\sqrt{x}$ & $1$ & 81,73\% & 3,63 \tabularnewline
-    \hline
-    $\sqrt{x}$ & $\log{x}$ & 81,76\% & 3,57 \tabularnewline
-    \hline
-    $\sqrt{x}$ & $\sqrt{x}$ & 79,78\% & 3,77 \tabularnewline
-    \hline
-    $x$ & $1$ & 79,45\% & 3,92 \tabularnewline
-    \hline
-    $x$ & $\log{x}$ & 79,67\% & 3,85 \tabularnewline
-    \hline
-    $x$ & $\sqrt{x}$ & 78,75\% & 3,88 \tabularnewline
-    \hline
-    \end{tabular}
-    \label{tab:bagofwords_lsa}
-    \end{table}
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{|c|c|c|c|}\hline
+    \boldmath$l(x)$ & \boldmath$g(x)$ & \textbf{Определение пола} & \textbf{Определение возраста} \\\hline
+    $1$ & $1$ & \textbf{82,46\%} & \textbf{3,54} \\\hline
+    $\log{x}$ & $1$ & 81,59\% & 3,64 \\\hline
+    $\log{x}$ & $\log{x}$ & 81,67\% & 3,58 \\\hline
+    $\log{x}$ & $\sqrt{x}$ & 80,08\% & 5,49 \\\hline
+    $\sqrt{x}$ & $1$ & 72,80\% & 4,79 \\\hline
+    $\sqrt{x}$ & $\log{x}$ & 70,61\% & 4,91 \\\hline
+    $\sqrt{x}$ & $\sqrt{x}$ & 67,07\% & 5,48 \\\hline
+    $x$ & $1$ & 70,74\% & 5,02 \\\hline
+    $x$ & $\log{x}$ & 69,38\% & 5,12 \\\hline
+    $x$ & $\sqrt{x}$ & 67,44\% & 5,45 \\\hline
+    \multicolumn{2}{|c|}{log-entropy} & 81,46\% & 3,59 \\\hline
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Результаты: матрица на основе порядка + ЛСА}
@@ -231,31 +228,19 @@
               0,& A_{ij} = \varnothing,\\
               \sum\limits_{a \in A_{ij}}{f(a)},& A_{ij} \ne \varnothing
           \end{cases}\]
-    \begin{table}[h!]
-    \centering
-    \begin{tabular}{|c|c|c|}
-    \hline
-    \boldmath$f(a)$ & \textbf{Опредление пола} & \textbf{Определение возраста} \tabularnewline
-    \hline
-    $1$ & 78,12\% & 3,97 \tabularnewline
-    \hline
-    $\frac{1}{\log{a + 1}}$ & 79,65\% & 3,93 \tabularnewline
-    \hline
-    $\frac{1}{a^2}$ & 77,51\% & 4,06 \tabularnewline
-    \hline
-    $\frac{1}{a}$ & 77,67\% & 4,13 \tabularnewline
-    \hline
-    $\frac{1}{\sqrt{a}}$ & \textbf{79,39\%} & \textbf{3,97} \tabularnewline
-    \hline
-    $51 - a$ & 79,01\% & 3,98 \tabularnewline
-    \hline
-    $\log{51} - \log{a}$ & 78,72\% & 4,04 \tabularnewline
-    \hline
-    $\sqrt{51} - \sqrt{a}$ & 79,02\% & 4,01 \tabularnewline
-    \hline
-    \end{tabular}
-    \label{tab:order_lsa}
-    \end{table}
+\begin{table}[!h]
+\centering
+\begin{tabular}{|c|c|c|}\hline
+    \boldmath$f(a)$ & \textbf{Определение пола} & \textbf{Определение возраста} \\\hline
+    $\frac{1}{\log(a + 1)}$ & \textbf{79,65\%} & \textbf{3,93} \\\hline
+    $\frac{1}{\sqrt{a}}$ & 79,39\% & 3,97 \\\hline
+    $\frac{1}{a^2}$ & 77,51\% & 4,06 \\\hline
+    $\frac{1}{a}$ & 77,67\% & 4,13 \\\hline
+    $51 - a$ & 79,01\% & 3,98 \\\hline
+    $\log{51} - \log{a}$ & 78,73\% & 4,04 \\\hline
+    $\sqrt{51} - \sqrt{a}$ & 79,02\% & 4,01 \\\hline
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Результаты: <<bag of words>> + word embedding}
@@ -263,35 +248,23 @@
               0,& \mathrm{tf}_{ij} = 0,\\
               l(\mathrm{tf}_{ij}) \cdot g(\frac{n}{\mathrm{df}_{i}}),& \mathrm{tf}_{ij} \ne 0
         \end{cases}\]
-    \begin{table}[h!]
-    \centering
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-    \boldmath$l(x)$ & \boldmath$g(x)$ & \textbf{Определение пола} & \textbf{Определение возраста} \tabularnewline
-    \hline
-    $1$ & $1$ & \textbf{80,25\%} & 3,08 \tabularnewline
-    \hline
-    $\log{x}$ & $1$ & 80,03\% & \textbf{3,02} \tabularnewline
-    \hline
-    $\log{x}$ & $\log{x}$ & 78,06\% & 3,42 \tabularnewline
-    \hline
-    $\log{x}$ & $\sqrt{x}$ & 78,04\% & 3,43 \tabularnewline
-    \hline
-    $\sqrt{x}$ & $1$ & 78,40\% & 3,27 \tabularnewline
-    \hline
-    $\sqrt{x}$ & $\log{x}$ & 78,06\% & 3,42 \tabularnewline
-    \hline
-    $\sqrt{x}$ & $\sqrt{x}$ & 78,02\% & 3,43 \tabularnewline
-    \hline
-    $x$ & $1$ & 78,04\% & 3,39 \tabularnewline
-    \hline
-    $x$ & $\log{x}$ & 78,01\% & 3,43 \tabularnewline
-    \hline
-    $x$ & $\sqrt{x}$ & 78,00\% & 3,43 \tabularnewline
-    \hline
-    \end{tabular}
-    \label{tab:bagofwords_wordembedding}
-    \end{table}
+\begin{table}[!h]
+\centering
+\begin{tabular}{|c|c|c|c|}\hline
+    \boldmath$l(x)$ & \boldmath$g(x)$ & \textbf{Определение пола} & \textbf{Определение возраста} \\\hline
+    $1$ & $1$ & -\% & - \\\hline
+    $\log{x}$ & $1$ & -\% & - \\\hline
+    $\log{x}$ & $\log{x}$ & 78,05\% & 3,42 \\\hline
+    $\log{x}$ & $\sqrt{x}$ & -\% & - \\\hline
+    $\sqrt{x}$ & $1$ & -\% & - \\\hline
+    $\sqrt{x}$ & $\log{x}$ & 78,03\% & 3,43 \\\hline
+    $\sqrt{x}$ & $\sqrt{x}$ & -\% & - \\\hline
+    $x$ & $1$ & -\% & - \\\hline
+    $x$ & $\log{x}$ & 78,01\% & 3,43 \\\hline
+    $x$ & $\sqrt{x}$ & 78,00\% & 3,43 \\\hline
+    \multicolumn{2}{|c|}{log-entropy} & \textbf{83,86\%} & \textbf{2,65} \\\hline
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Результаты: матрица на основе порядка + word embedding}
@@ -299,36 +272,24 @@
               0,& A_{ij} = \varnothing,\\
               \sum\limits_{a \in A_{ij}}{f(a)},& A_{ij} \ne \varnothing
           \end{cases}\]
-    \begin{table}[h!]
-    \centering
-    \begin{tabular}{|c|c|c|}
-    \hline
-    \boldmath$f(a)$ & \textbf{Опредление пола} & \textbf{Определение возраста} \tabularnewline
-    \hline
-    $1$ & 78,12\% & 3,40 \tabularnewline
-    \hline
-    $\frac{1}{\log{a + 1}}$ & 80,05\% & 2,97 \tabularnewline
-    \hline
-    $\frac{1}{a^2}$ & 72,20\% & 4,63 \tabularnewline
-    \hline
-    $\frac{1}{a}$ & 78,76\% & 3,74 \tabularnewline
-    \hline
-    $\frac{1}{\sqrt{a}}$ & \textbf{82,01\%} & \textbf{2,93} \tabularnewline
-    \hline
-    $51 - a$ & 77,91\% & 3,48 \tabularnewline
-    \hline
-    $\log{51} - \log{a}$ & 78,12\% & 3,37 \tabularnewline
-    \hline
-    $\sqrt{51} - \sqrt{a}$ & 78,15\% & 3,41 \tabularnewline
-    \hline
-    \end{tabular}
-    \label{tab:order_wordembedding}
-    \end{table}
+\begin{table}[!h]
+\centering
+\begin{tabular}{|c|c|c|}\hline
+    \boldmath$f(a)$ & \textbf{Определение пола} & \textbf{Определение возраста} \\\hline
+    $\frac{1}{\log(a + 1)}$ & 78,56\% & 3,15 \\\hline
+    $\frac{1}{\sqrt{a}}$ & 80,32\% & \textbf{2,99} \\\hline
+    $\frac{1}{a^2}$ & 74,77\% & 4,42 \\\hline
+    $\frac{1}{a}$ & \textbf{80,89\%} & 3,35 \\\hline
+    $51 - a$ & 77,82\% & 3,49 \\\hline
+    $\log{51} - \log{a}$ & 78,18\% & 3,40 \\\hline
+    $\sqrt{51} - \sqrt{a}$ & 78,11\% & 3,42 \\\hline
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Заключение}
+    \textit{BOW+WE}~--- <<bag of words>> + word embedding \\
     \textit{BOW+ЛСА}~--- <<bag of words>> + ЛСА \\
-    \textit{Order+WE}~--- матрица на основе порядка + word embedding \\
     \textit{baseline}~--- Wu M. J.,
         Jang J. S. R., Lu C. H. Gender Identification
         and Age Estimation of Users Based on Music 
@@ -337,11 +298,11 @@
     \centering
     \begin{tabular}{|c|c|c|c|}
     \hline
-    \textbf{Тип задачи} & \textbf{BOW+ЛСА} & \textbf{Order+WE} & \textbf{baseline} \tabularnewline
+    \textbf{Тип задачи} & \textbf{BOW+WE} & \textbf{BOW+ЛСА} & \textbf{baseline} \tabularnewline
     \hline
-    Определение пола & \textbf{82,46\%} & 82,01\% & \prevGender \tabularnewline
+    Определение пола & \textbf{83,86\%} & 82,46\% & \prevGender \tabularnewline
     \hline
-    Определение возраста & 3,54 & \textbf{2,93} & \prevAge \tabularnewline
+    Определение возраста & \textbf{2,65} & 3,54 & \prevAge \tabularnewline
     \hline
     \end{tabular}
     \label{tab:total_results}
