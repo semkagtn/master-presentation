@@ -252,14 +252,14 @@ $ (Формула log-entropy)}
 \centering
 \begin{tabular}{|c|c|c|c|}\hline
     \boldmath$l(x)$ & \boldmath$g(x)$ & \textbf{Определение пола} & \textbf{Определение возраста} \\\hline
-    $1$ & $1$ & -\% & - \\\hline
-    $\log{x}$ & $1$ & -\% & - \\\hline
+    $1$ & $1$ & 78,98\% & 3,24 \\\hline
+    $\log{x}$ & $1$ & 78,08\% & 3,21 \\\hline % TODO
     $\log{x}$ & $\log{x}$ & 78,05\% & 3,42 \\\hline
     $\log{x}$ & $\sqrt{x}$ & 78.01\% & 3.43 \\\hline
-    $\sqrt{x}$ & $1$ & -\% & - \\\hline
+    $\sqrt{x}$ & $1$ & 77,90\% & 3,28 \\\hline % TODO
     $\sqrt{x}$ & $\log{x}$ & 78,03\% & 3,43 \\\hline
-    $\sqrt{x}$ & $\sqrt{x}$ & -\% & - \\\hline
-    $x$ & $1$ & -\% & - \\\hline
+    $\sqrt{x}$ & $\sqrt{x}$ & 78.01\% & 3.43 \\\hline
+    $x$ & $1$ & 78,12\% & 3,41 \\\hline
     $x$ & $\log{x}$ & 78,01\% & 3,43 \\\hline
     $x$ & $\sqrt{x}$ & 78,00\% & 3,43 \\\hline
     \multicolumn{2}{|c|}{log-entropy} & \textbf{83,86\%} & \textbf{2,65} \\\hline
@@ -267,7 +267,7 @@ $ (Формула log-entropy)}
 \end{table}
 \end{frame}
 
-\begin{frame}{Результаты: матрица на основе порядка + word embedding}
+\begin{frame}{Результаты: порядок исполнителей + word embedding}
     \[d_{ij} = \begin{cases}
               0,& A_{ij} = \varnothing,\\
               \sum\limits_{a \in A_{ij}}{f(a)},& A_{ij} \ne \varnothing
