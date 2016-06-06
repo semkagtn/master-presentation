@@ -22,7 +22,7 @@
     группа: M4238, \\
     научный руководитель: Фильченков~A.~A., к.ф.-м.н.}
 \institute{Университет ИТМО}
-\date{\today}
+\date{20 июня 2016 г.}
 
 \subject{Научно-исследовательская работа}
 
@@ -55,31 +55,44 @@
 \begin{frame}{Задача профилирования пользователей}
   \begin{itemize}
       \item {Информация о пользователях часто является неполной или отсутствует}
-      \item {Задача: определить отсутствующие характеристики по имеющимся (по музыке)}
-      \item {Характеристики пользователей являются ключевыми признаками в рекомендательных системах}
-      \item {Существует множество подходов к определению характеристик пользователей}
-          \begin{itemize}
-              \item {Информация о музыке пользователей используется не часто}
-              \item {Метод, использующий музыкальные предпочтения, может помочь улучшить существующие алгоритмы}
-          \end{itemize}
+      \item {Задача: определить отсутствующие характеристики по имеющимся}
+      \item {Мотивация: характеристики пользователей являются
+          ключевыми признаками в рекомендательных системах}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Задача определения характеристик пользователей}
-    \begin{figure}
-        \includegraphics[scale=0.40]{figures/lastfm-top.pdf}
-    \end{figure}
+\begin{frame}{Списочные данные о пользователях}
+    \begin{itemize}
+        \item {Списочные данные о пользователях встречаются часто}
+        \item {Примеры списочных данных}
+            \begin{itemize}
+                \item {Любимые фильмы пользователя}
+                \item {Самые прослушиваемые пользователем музыкальные исполнители}
+                \item {Часто совершаемые действия пользователем на сайте}
+                \item {Список сообществ пользователя}
+            \end{itemize}
+        \item {Особенности списочных данных}
+            \begin{itemize}
+                \item {Похожи на текстовые, но семантика присущая тексту отсутствует}
+                \item {Могут присутствовать повторяющиеся элементы}
+                \item {Может присутствовать признак ранжирования}
+            \end{itemize}
+        \item {Метод профилирования, использующий списочные данные,
+            может помочь улучшить существующие алгоритмы}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Предлагаемый подход к решению}
     \begin{figure}
-        \includegraphics[width=\textwidth]{figures/master-concept.pdf}
+        \includegraphics[width=\textwidth]{figures/presentation-concept.pdf}
     \end{figure}
+    \begin{itemize}
+        \item \textbf{\color{blue} 2. На основе порядка} -- если присутствует признак ранжирования
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Шаг 1: <<bag of words>>}
   \begin{itemize}
-      \item {Пользователи~--- документы, исполнители~--- термины}
       \item {$D = \{d_{ij}\}$~--- матрица термин--документ}
       \item {$d_{ij} = \mathrm{tf}_{ij} \cdot \log{\frac{n}{\mathrm{df}_{i}}}$ (Формула TF-IDF)}
           \begin{itemize}
@@ -95,9 +108,9 @@
               \item {$l(x), g(x)$~--- неубывающие неотрицательные функции}
           \end{itemize}
       \item {$ 
-          d_{ij} = \log{(\mathrm{tf}_{ij} + 1)} 
-          (1 + \sum_{j=1}^{n} \frac{p_{ij} \log{p_{ij}}}{\log{n}})
-$ (Формула log-entropy)}
+             d_{ij} = \log{(\mathrm{tf}_{ij} + 1)} 
+             (1 + \sum_{j=1}^{n} \frac{p_{ij} \log{p_{ij}}}{\log{n}})
+             $ (Формула log-entropy)}
           \begin{itemize}
               \item {$p_{ij} = \frac{\mathrm{tf}_{ij}}{\mathrm{gf}_i}$}
               \item {$\mathrm{gf}_i$~--- общее число встреч термина $i$}
@@ -107,11 +120,9 @@ $ (Формула log-entropy)}
 
 \begin{frame}{Шаг 1: на основе порядка}
   \begin{itemize}
-      \item {Гипотеза о значимости порядка следования исполнителей}
-      \item {Чем выше находится исполнитель в списке,
-               тем более <<значимым>> он является для пользователя}
+      \item {Термины в документах упорядочены по убыванию значения признака ранжирования}
       \item {Пусть $A_{ij} \subset \mathbb{N}$~--- множество позиций, на которых располагается
-             исполнитель $i$ в списке у пользователя $j$}
+             термин $i$ в документе $j$}
       \item {$d_{ij} = \begin{cases}
           0,& A_{ij} = \varnothing,\\
           \sum\limits_{a \in A_{ij}}{f(a)},& A_{ij} \ne \varnothing 
@@ -124,7 +135,7 @@ $ (Формула log-entropy)}
 
 \begin{frame}{Шаг 2: латентный семантический анализ}
   \begin{itemize}
-      \item {Пусть $D \in \mathbb{R}^{m \times n}$~--- матрица исполнитель--пользователь}
+      \item {Пусть $D \in \mathbb{R}^{m \times n}$~--- матрица термин--документ}
       \item {\textit{Латентный семантический анализ}~--- пребразование документов из пространства
              терминов в пространство латентных тематик}
       \item {$D = U \cdot V^{T}$}
@@ -132,32 +143,38 @@ $ (Формула log-entropy)}
           \item {$U \in \mathbb{R}^{m \times k}$}
           \item {$V \in \mathbb{R}^{n \times k}$}
           \item {$k \ll m$}
-          \item {$V$~--- матрица пользователь--признак}
+          \item {$V$~--- матрица документ--признак}
       \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Шаг 2: на основе word embedding}
   \begin{itemize}
-      \item {$D \in \mathbb{R}^{m \times n}$~--- исполнитель--пользователь}
+      \item {$D \in \mathbb{R}^{m \times n}$~--- матрица термин--документ}
       \item {\textit{Word embedding} преобразует термины в вектора произвольной размерности ($k$)}
       \item {$W \in \mathbb{R}^{m \times k}$~--- матрица, полученная при использовании word embedding}
       \item {$M = D^T \cdot W$}
       \begin{itemize}
           \item {$M \in \mathbb{R}^{n \times k}$}
           \item {$k \ll m$}
-          \item {$M$~--- матрица пользователь--признак}
+          \item {$M$~--- матрица документ--признак}
       \end{itemize}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Источник данных~--- Last.fm}
+\begin{frame}{Профилирование пользователей сайта Last.fm}
     \begin{figure}
         \includegraphics[width=\textwidth]{figures/lastfm.png}
     \end{figure}
 \end{frame}
 
-\begin{frame}{Подход на примере определения пола и возраста}
+\begin{frame}{Определение пола и возраста пользователей по музыке}
+    \begin{figure}
+        \includegraphics[scale=0.38]{figures/lastfm-problem.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Набор данных}
     \begin{itemize}
         \item {Использовался набор данных из существующего 
               исследования\footnote{Wu M. J.,
