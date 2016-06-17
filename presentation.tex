@@ -22,7 +22,7 @@
     группа: M4238, \\
     научный руководитель: Фильченков~A.~A., к.ф.-м.н.}
 \institute{Университет ИТМО}
-\date{9 июня 2016 г.}
+\date{20 июня 2016 г.}
 
 \subject{Научно-исследовательская работа}
 
@@ -36,9 +36,9 @@
   \begin{itemize}
       \item {Огромное число пользователей}
           \begin{itemize}
-              \item {Facebook~--- $968 \cdot 10^{6}$ уникальных посещений сайта в день}
-              \item {Vkontakte~--- $75 \cdot 10^{6}$ уникальных посещений сайта в день}
-              \item {Instagram~--- $400 \cdot 10^{6}$ уникальных посещений сайта в месяц}
+              \item {Facebook~--- $1{,}7 \cdot 10^{9}$ уникальных посещений сайта в месяц}
+              \item {Twitter~--- $1{,}0 \cdot 10^{9}$ уникальных посещений сайта в месяц}
+              \item {Instagram~--- $0{,}4 \cdot 10^{9}$ уникальных посещений сайта в месяц}
           \end{itemize}
       \item {Информация о пользователях находится в открытом доступе}
           \begin{itemize}
@@ -305,7 +305,7 @@
 \end{table}
 \end{frame}
 
-\begin{frame}{Заключение}
+\begin{frame}{Результаты}
     \textit{BOW+WE}~--- <<bag of words>> + word embedding \\
     \textit{BOW+ЛСА}~--- <<bag of words>> + ЛСА \\
     \textit{baseline}~--- Wu M. J.,
@@ -325,6 +325,39 @@
     \end{tabular}
     \label{tab:total_results}
     \end{table}
+\end{frame}
+
+\begin{frame}{Дополнительный эксперимент}
+    \begin{itemize}
+        \item {Задача~--- \textit{Bag of Words Meets Bags of Popcorn}\footnote{https://www.kaggle.com/c/word2vec-nlp-tutorial}}
+        \item {50000 рецензий с сайта IMDb~--- задача классификации}
+            \begin{itemize}
+                \item {Классы~--- оценка фильму: $\ge 7$, $\le 5$}
+                \item {Обучающая/контрольная выборки~--- 50\%/50\%}
+                \item {Качество~--- AUC}
+            \end{itemize}
+        \item {Параметры модели}
+            \begin{itemize}
+                \item {Размерность пространства~--- 300} 
+                \item {Классификатор~--- Логистическая регрессия}
+            \end{itemize}
+        \item {Результаты}
+            \begin{itemize}
+                \item {<<bag of words>> + ЛСА~--- 0{,}86660}
+                \item {<<bag of words>> + word embedding~--- \textbf{0{,}88048}}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Заключение}
+    \begin{itemize}
+        \item {Предложен подход к построению модели на основе
+               списочных или текстовых данных}
+        \item {Состоятельность подхода продемонстрирована на двух задачах}
+        \item {Достигнутые результаты определения пола и возраста
+               пользователей сайта Last.fm превосходят результаты
+               достигнутые ранее}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
